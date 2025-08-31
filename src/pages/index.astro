@@ -13,7 +13,7 @@ const allPosts = await getCollection('blog');
     {
       allPosts.map((post) => (
         <li>
-          <a href={`${import.meta.env.BASE_URL}${post.id}`} class="post">
+          <a href={`/blog/${post.id}`} class="post">
             <Image src={post.data.thumbnail || fallbackThumbnail} alt="" loading="lazy" width="375" height="375" fit="cover" class="monochrome photo-image" />
             <div class="post-info">
               <h3>{post.data.title}</h3>
