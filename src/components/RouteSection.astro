@@ -10,9 +10,10 @@ interface Props {
    */
   totalDistance: number;
   map: MapParams;
+  skipLink?: string;
 }
 
-const { mapImage, routeData, totalDistance, map } = Astro.props as Props;
+const { mapImage, routeData, totalDistance, map, skipLink } = Astro.props as Props;
 const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
 ---
 
@@ -35,6 +36,7 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
     <div class="distance">
       走行距離<span class="value" data-distance-value={totalDistance}>0</span>km
     </div>
+    {skipLink && <a href={skipLink} class="skip-link">ルート紹介をスキップ</a>}
   </div>
 </section>
 
@@ -75,6 +77,13 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
     font-size: 2em;
     min-width: 2em;
     text-align: end;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25em;
   }
 </style>
 

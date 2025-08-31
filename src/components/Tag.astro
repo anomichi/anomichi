@@ -1,0 +1,12 @@
+---
+import { TAG_MAP } from '../consts';
+
+interface Props {
+  tag: keyof typeof TAG_MAP;
+}
+const { tag } = Astro.props;
+---
+
+<span>
+  {TAG_MAP[tag] || tag}
+</span>

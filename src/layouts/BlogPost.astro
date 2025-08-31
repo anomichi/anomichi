@@ -2,18 +2,33 @@
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from './BaseLayout.astro';
+import Tag from '../components/Tag.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
-const { title, description, pubDate, thumbnail, mapImage, routeData, totalDistance, map } = Astro.props;
+const { title, description, pubDate, thumbnail, tags } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} cover={thumbnail} coverClass={'coloring'}>
   <article>
     <header class="inner">
       <h1>{title}</h1>
+      <ul class="tags">
+        {tags.map(tag => (<li><Tag tag={tag} /></li>))}
+      </ul>
       <small><FormattedDate date={pubDate} /></small>
       <hr />
     </header>
     <slot />
   </article>
 </BaseLayout>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 1em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

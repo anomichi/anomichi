@@ -2,17 +2,14 @@
 title: 'example post'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: '2025-08-31T12:00:00+09:00'
+tags: ['pentax-kf', 'iphone13mini', 'nc750x']
 ---
-
-<div class="inner">
-  <a href="#content">本文へ</a>
-</div>
 
 import RouteSection from '../components/RouteSection.astro';
 import mapImage from '../assets/map/example.png';
 import routeData from '../assets/map/example.json';
 
-<RouteSection mapImage={mapImage} routeData={routeData} totalDistance={350} map={{
+<RouteSection skipLink="#content" mapImage={mapImage} routeData={routeData} totalDistance={350} map={{
   zoom: 9,
   center: {
     lon: 139.2425,

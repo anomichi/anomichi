@@ -4,12 +4,13 @@ import { getCollection } from 'astro:content';
 import fallbackThumbnail from '../assets/thumbnail.png';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Tag from '../components/Tag.astro';
 const allPosts = await getCollection('blog');
 ---
 
 <BaseLayout>
   <h2>最新の投稿</h2>
-  <ul>
+  <ul class="posts">
     {
       allPosts.map((post) => (
         <li>
@@ -17,6 +18,9 @@ const allPosts = await getCollection('blog');
             <Image src={post.data.thumbnail || fallbackThumbnail} alt="" loading="lazy" width="375" height="375" fit="cover" class="monochrome photo-image" />
             <div class="post-info">
               <h3>{post.data.title}</h3>
+              <ul class="tags">
+                {post.data.tags.map(tag => (<li><Tag tag={tag} /></li>))}
+              </ul>
               <small><FormattedDate date={post.data.pubDate} /></small>
             </div>
           </a>
@@ -32,9 +36,12 @@ const allPosts = await getCollection('blog');
   }
 
   ul {
-    display: grid;
     padding: 0;
     list-style: none;
+  }
+
+  .posts {
+    display: grid;
   }
 
   .post {
@@ -58,5 +65,11 @@ const allPosts = await getCollection('blog');
   }
   .post-info small {
     margin-top: auto;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 1em;
   }
 </style>

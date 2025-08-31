@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { TAGS } from './consts';
 
 const blog = defineCollection({
   loader: glob({ base: './src/contents', pattern: '**/*.{md,mdx}' }),
@@ -10,6 +11,7 @@ const blog = defineCollection({
       description: z.string(),
       // Transform string to Date object
       pubDate: z.coerce.date(),
+      tags: z.array(z.enum(TAGS)),
       updatedDate: z.coerce.date().optional(),
       thumbnail: image().optional(),
     }),
