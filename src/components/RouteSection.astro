@@ -19,7 +19,7 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
 
 <section class="route-section" data-route-section style={`--total-distance: ${totalDistance};`}>
   <div class="inner">
-    <h2>ルート紹介</h2>
+    <h2>走行ルート</h2>
   </div>
   <div class="sticky">
     <Image
@@ -35,7 +35,7 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
     <div class="distance">
       走行距離<span class="value" data-distance-value={totalDistance}>0</span>km
     </div>
-    {skipLink && <a href={skipLink} class="skip-link">ルート紹介をスキップ</a>}
+    {skipLink && <a href={skipLink} class="skip-link">走行ルートをスキップ</a>}
   </div>
 </section>
 
