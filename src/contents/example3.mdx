@@ -8,6 +8,8 @@ tags: ['pentax-kf', 'iphone13mini', 'nc750x']
 import RouteSection from '../components/RouteSection.astro';
 import mapImage from '../assets/map/example.png';
 import routeData from '../assets/map/example.json';
+import thumbnail from '../assets/thumbnail.png';
+import cover from '../assets/cover.jpg';
 
 <RouteSection skipLink="#content" mapImage={mapImage} routeData={routeData} totalDistance={350} map={{
   zoom: 9,
@@ -23,15 +25,25 @@ import routeData from '../assets/map/example.json';
 
 ## スタート
 
+import SingleImage from '../components/SingleImage.astro';
+
+<SingleImage image={thumbnail} />
+
 ここにスタート地点の画像や一言を追加します。
 
 ## チェックポイント
 
 ここにチェックポイントの画像や一言を追加します。
 
+import ImageGallery from '../components/ImageGallery.astro';
+
+<ImageGallery images={[cover, thumbnail, mapImage, cover, thumbnail, mapImage]} />
+
 ## チェックポイント
 
 ここにチェックポイントの画像や一言を追加します。
+
+<ImageGallery images={[thumbnail, cover]} />
 
 ## チェックポイント
 

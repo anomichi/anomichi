@@ -1,0 +1,45 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  image: ImageMetadata;
+}
+const { image } = Astro.props;
+---
+
+<a class="inner-break" href={image.src} target="_blank" rel="noopener noreferrer" aria-label="フルサイズ画像を別タブで開く" data-original-link>
+  <div data-single-image>
+    <Image src={image} alt="" layout="full-width" fit="contain" />
+  </div>
+</a>
+
+<style>
+  a {
+    display: block;
+    padding: 1em;
+    background: rgba(0, 0, 0, 0.7);
+
+    img {
+      aspect-ratio: 1;
+      object-fit: contain;
+      filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+    }
+  }
+</style>
+
+<script>
+  window.addEventListener('load', () => {
+    const originalLinks = document.querySelectorAll<HTMLElement>('[data-original-link]');
+    if (!originalLinks) return;
+
+    originalLinks.forEach(originalLink => {
+      originalLink.addEventListener('click', (event) => {
+        const img = originalLink.querySelector<HTMLImageElement>('img');
+        if (!confirm(`フルサイズ画像を別タブで開きますか？\n画像サイズ: ${img?.getAttribute('width')}x${img?.getAttribute('height')}（〇〇MB）`)) {
+          event.preventDefault();
+        }
+      });
+    });
+  })
+</script>
