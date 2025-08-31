@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import { geojsonToSVGPath, type MapParams } from '../scripts/geojsonToSVGPath';
+
+interface Props {
+  mapImage: any;
+  routeData: any;
+  /**
+   * 走行距離 (km)
+   */
+  totalDistance: number;
+  map: MapParams;
+}
+
+const { mapImage, routeData, totalDistance, map } = Astro.props as Props;
+const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
+---
+
+<section class="route-section" data-route-section style={`--total-distance: ${totalDistance};`}>
+  <div class="inner">
+    <h2>ルート紹介</h2>
+  </div>
+  <div class="sticky">
+    <Image
+      data-map-image
+      src={mapImage}
+      alt=""
+      width={map.width}
+      height={map.height}
+      class="monochrome"
+    />
+    <svg width={map.width} height={map.height} viewBox={`0 0 ${map.width} ${map.height}`}>
+      <path data-root-path d={pathData} stroke="red" stroke-width="4" fill="none" style="opacity:0;"></path>
+    </svg>
+    <div class="distance">
+      走行距離<span class="value" data-distance-value={totalDistance}>0</span>km
+    </div>
+  </div>
+</section>
+
+<style>
+  .route-section {
+    position: relative;
+    height: calc(var(--total-distance) * 5px + 100vh);
+  }
+
+  .sticky {
+    position: sticky;
+    top: 20%;
+  }
+
+  :is(img, svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .distance {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-inline: 1em;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 0 4px 0 0;
+  }
+
+  .value {
+    display: inline-block;
+    font-family: '7bar';
+    font-size: 2em;
+    min-width: 2em;
+    text-align: end;
+  }
+</style>
+
+<script>
+  window.addEventListener(
+    'load',
+    () => {
+      const mapImg = document.querySelector<HTMLElement>('[data-map-image]');
+      const section = document.querySelector<HTMLElement>('[data-route-section]');
+      const path = document.querySelector<SVGPathElement>('[data-root-path]');
+      const distanceEl = document.querySelector<HTMLElement>('[data-distance-value]');
+      if (!mapImg || !section || !path || !distanceEl) {
+        return;
+      }
+
+      const pathLength = path.getTotalLength();
+      path.style.strokeDasharray = path.style.strokeDashoffset = String(pathLength);
+      path.style.opacity = '1';
+
+      let ticking = false;
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const mapHeight = mapImg.clientHeight;
+      const scrollHeight = sectionHeight - (mapHeight + mapHeight / 2);
+      const totalDistance = Number(distanceEl.dataset.distanceValue);
+      const updateProgress = () => {
+        const scrollY = window.scrollY;
+        const progress = Math.min(Math.max((scrollY - sectionTop) / scrollHeight, 0), 1);
+
+        if (progress > 0 && !mapImg.classList.contains('coloring')) {
+          mapImg.classList.add('coloring');
+        }
+        path.style.strokeDashoffset = String(pathLength * (1 - progress));
+        distanceEl.textContent = String(Math.floor(totalDistance * progress));
+      };
+
+      document.addEventListener(
+        'scroll',
+        () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              updateProgress();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+    },
+    { once: true }
+  );
+</script>

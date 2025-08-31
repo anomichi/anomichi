@@ -1,0 +1,51 @@
+---
+title: 'example post'
+description: 'Lorem ipsum dolor sit amet'
+pubDate: '2025-08-31T12:00:00+09:00'
+---
+
+<div class="inner">
+  <a href="#content">本文へ</a>
+</div>
+
+import RouteSection from '../components/RouteSection.astro';
+import mapImage from '../assets/map/example.png';
+import routeData from '../assets/map/example.json';
+
+<RouteSection mapImage={mapImage} routeData={routeData} totalDistance={350} map={{
+  zoom: 9,
+  center: {
+    lon: 139.2425,
+    lat: 35.4893
+  },
+  width: 1000,
+  height: 800
+}} />
+
+<div id="content" class="inner">
+
+## スタート
+
+ここにスタート地点の画像や一言を追加します。
+
+## チェックポイント
+
+ここにチェックポイントの画像や一言を追加します。
+
+## チェックポイント
+
+ここにチェックポイントの画像や一言を追加します。
+
+## チェックポイント
+
+ここにチェックポイントの画像や一言を追加します。
+
+## チェックポイント
+
+ここにチェックポイントの画像や一言を追加します。
+
+## ゴール
+
+ここにゴール地点の画像や一言を追加します。
+
+</div>
