@@ -5,7 +5,7 @@ import fallbackThumbnail from '../assets/thumbnail.png';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Tag from '../components/Tag.astro';
-const allPosts = await getCollection('blog');
+const allPosts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
 <BaseLayout>
@@ -71,5 +71,6 @@ const allPosts = await getCollection('blog');
     display: flex;
     flex-wrap: wrap;
     gap: 0.25em 1em;
+    font-size: .9em;
   }
 </style>
