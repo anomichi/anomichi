@@ -28,10 +28,9 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
       alt=""
       width={map.width}
       height={map.height}
-      class="monochrome"
     />
     <svg width={map.width} height={map.height} viewBox={`0 0 ${map.width} ${map.height}`}>
-      <path data-root-path d={pathData} stroke="red" stroke-width="4" fill="none" style="opacity:0;"></path>
+      <path data-root-path d={pathData} style="opacity:0;"></path>
     </svg>
     <div class="distance">
       走行距離<span class="value" data-distance-value={totalDistance}>0</span>km
@@ -60,6 +59,11 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
     position: absolute;
     top: 0;
     left: 0;
+  }
+  path {
+    stroke: red;
+    stroke-width: 10px;
+    fill: none;
   }
 
   .distance {
@@ -110,12 +114,7 @@ const pathData = geojsonToSVGPath(routeData as GeoJSON.FeatureCollection, map);
       const scrollHeight = sectionHeight - (mapHeight + mapHeight / 2);
       const totalDistance = Number(distanceEl.dataset.distanceValue);
       const updateProgress = () => {
-        const scrollY = window.scrollY;
-        const progress = Math.min(Math.max((scrollY - sectionTop) / scrollHeight, 0), 1);
-
-        if (progress > 0 && !mapImg.classList.contains('coloring')) {
-          mapImg.classList.add('coloring');
-        }
+        const progress = Math.min(Math.max((window.scrollY - sectionTop) / scrollHeight, 0), 1);
         path.style.strokeDashoffset = String(pathLength * (1 - progress));
         distanceEl.textContent = String(Math.floor(totalDistance * progress));
       };
