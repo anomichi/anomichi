@@ -60,3 +60,33 @@ Check out [our documentation](https://docs.astro.build) or jump into our [Discor
 ## Credit
 
 This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+
+## Anomichi
+
+### 走行ルート用のデータ作成手順
+
+1. 走行ルートのgeojsonを生成
+  - SVGでアニメーションさせる用
+1. 地図画像を生成
+  - 背景画像として使う用。軽量化のために静止画にしている。
+
+いまはこうやっている。
+
+#### 走行ルートのgeojsonを生成
+
+1. [Google My Maps](https://mymaps.google.com/)で、スタートからゴールへのルートのラインを引く
+1. KML / KMZ にエクスポートから、上記で作成したルートを選択して、KMLでダウンロード
+1. [geojson.io](https://geojson.io/) にKMLファイルをドラッグ・アンド・ドロップ
+1. GeoJSON形式でダウンロード
+1. *.jsonにリネームして、srcフォルダに保存
+
+#### 地図画像を生成
+
+mapboxの[Static Images API](https://docs.mapbox.com/api/ja/maps/static-images/)を利用している。
+
+1. 緯度経度とズームレベルを[geojson.io](https://geojson.io/)のURLから取得
+  - KMLファイルを貼り付けたときに、このようなURLになる。 https://geojson.io/#map=9/35.4893/139.2425 調整しても問題ない
+1. URLを生成する
+  - 形式: `https://api.mapbox.com/styles/v1/{username}/{style_id}/static/{overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}`
+  - 例: https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/139.2425,35.4893,9/1000x800?access_token=YOUR_ACCESS_TOKEN
+1. 生成したURLの画像をsrcフォルダに保存
